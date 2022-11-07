@@ -1,10 +1,10 @@
 # Enunciado Veterinarias
 Nuestro cliente es una red de veterinarias y desea poder acceder a la siguiente información:
-    -Sucursales de Veterinarias
-    -Clientes
-    -Pacientes (mascotas)
-    -Proveedores
-    
+- Sucursales de Veterinarias
+- Clientes
+- Pacientes (mascotas)
+- Proveedores
+
 ## Veterinarias:
 Nombre, dirección, id (un número generado aleatoriamente al momento del alta) La red debe tener la posibilidad de dar de alta, modificar datos o dar de baja las mismas.
 
@@ -20,18 +20,18 @@ Nombre, teléfono y un id generado como los otros la red debe contar con la opci
 >**IMPORTANTE:** Los id deben ser únicos, por lo tanto al generarse, antes de guardarlos se debe validar que no exista. Si ya existe se debe volver a generar.
 
 # Pasos Recomendados
-    -Anotarse en la planilla de cálculo
-        -Nombre
-        -Miembros del equipo
-        -Link de Trello
-        -Link de GitHub
-    -Crear un tablero en Trello
-    -Crear un repositorio en GitHub
-    -Dividir tareas
-    -Planear reuniones si son necesarias fuera del horario de clases
-    -Anotar todas las dudas para hablarlas con los profes
+- Anotarse en la planilla de cálculo
+  - Nombre
+  - Miembros del equipo
+  - Link de Trello
+  - Link de GitHub
+- Crear un tablero en Trello
+- Crear un repositorio en GitHub
+- Dividir tareas
+- Planear reuniones si son necesarias fuera del horario de clases
+- Anotar todas las dudas para hablarlas con los profes
 
 # Miembros del equipo
-    -Vaca, Carolina
-    -Atala, Alejandro
-    -Mancioni Boggon, Braian
+- Vaca, Carolina
+- Atala, Alejandro
+- Mancioni Boggon, Braian
