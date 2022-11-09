@@ -23,7 +23,7 @@ export default class Cliente {
     }
 
     public getVip() :void {
-        if (this.vip === false){
+        if (!this.vip){
             console.log("Vip: no");
         } else {
             console.log("Vip: si");
