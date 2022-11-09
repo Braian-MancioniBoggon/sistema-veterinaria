@@ -46,7 +46,9 @@ export default class Cliente {
     }
 
     public mostrarMascotas = (pacientes) :void => {
+        //Recorro el arreglo de pacientes
         for (let i :number = 0; i < pacientes.length; i++){
+            //Busco coincidencia con el ID del cliente para mostrar solo sus mascotas por consola
             if (this.id === pacientes[i].getId()){
                 console.log("   -Nombre de la mascota: " + pacientes[i].getNombre());
                 console.log("    Especie: " + pacientes[i].getEspecie());
@@ -56,7 +58,9 @@ export default class Cliente {
 
     public cantidadMascotas = (pacientes) :number =>{
         let cantidad :number = 0;
+        //Recorro el arreglo de pacientes
         for (let i :number = 0; i < pacientes.length; i++){
+            //Busco coincidencia con el ID del cliente para contar las mascotas que tiene
             if (this.id === pacientes[i].getId()){
                 cantidad ++;
             };
