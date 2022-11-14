@@ -1,3 +1,5 @@
+import {pacientes} from "../index"
+
 //Creo la clase Cliente
 export default class Cliente {
     private nombre :string;
@@ -45,7 +47,7 @@ export default class Cliente {
         return this.id;
     }
 
-    public mostrarMascotas = (pacientes) :void => {
+    public mostrarMascotas = () :void => {
         //Recorro el arreglo de pacientes
         for (let i :number = 0; i < pacientes.length; i++){
             //Busco coincidencia con el ID del cliente para mostrar solo sus mascotas por consola
@@ -56,7 +58,7 @@ export default class Cliente {
         };
     }
 
-    public cantidadMascotas = (pacientes) :number =>{
+    public cantidadMascotas = () :number =>{
         let cantidad :number = 0;
         //Recorro el arreglo de pacientes
         for (let i :number = 0; i < pacientes.length; i++){
