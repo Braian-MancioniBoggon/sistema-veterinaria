@@ -1,12 +1,14 @@
 //Importo las clases
 import Cliente from './Clases/Cliente'
 import Paciente from './Clases/Paciente'
+import Sucursal from './Clases/Sucursal'
+import Proveedor from './Clases/Proveedor'
 
 //Importo las librerias que voy a utilizar
 import * as ReadlineSync from 'readline-sync';
 
 //Importo las funciones
-import {clientes, pacientes} from './index';
+import {clientes, pacientes, proveedores, sucursales} from './index';
 
 //Función para crear y verificar el ID
 export let generarId = (lista) => {
@@ -26,6 +28,19 @@ export let generarId = (lista) => {
     };
     
     return idGenerado;
+}
+
+export let mostrar = (lista):void =>{
+    for(let i=0; i< lista.length;i++){
+        console.log(lista[i]);
+}
+}
+
+class ErrorId extends Error{
+    constructor(mensaje: string) {
+        super(mensaje);
+        this.name = "ErrorValidacion";
+    }
 }
 
 //Funcion para modificar
@@ -53,10 +68,12 @@ export let modificar = (lista, modificarObjeto) => {
         let objetoModificado = modificarObjeto(lista[posicionArreglo].getId());
         delete lista[posicionArreglo];
         lista[posicionArreglo] = objetoModificado;
+      
     } else {
-        console.log("El ID no se encuentra en la base de datos")
-        modificar(lista, modificarObjeto);
-    };
+        throw new ErrorId("El ID no se encuentra en la base de datos");
+        
+           }
+    modificar(lista, modificarObjeto);
 }
 
 //Funcion para borrar
@@ -82,10 +99,12 @@ export let borrar = (lista) => {
     };
     if (coincidencia === 1){
         lista.splice(posicionArreglo,1);
+        console.log("El ID fue eliminado exitosamente!")
+     //   return;
     } else {
-        console.log("El ID no se encuentra en la base de datos")
-        borrar(lista);
-    };
+        throw new ErrorId("El ID no se encuentra en la base de datos");
+                }
+         
 }
 
 //----------------------------CLIENTE-----------------------------------
@@ -142,3 +161,127 @@ export let mostrarClientes = () :void => {
 
 //----------------------------PACIENTES-----------------------------------
 
+let id :string = "";
+
+//Función para crear un paciente
+export let agregarPaciente = (pacientes: Array<Paciente>) :void => {
+    let nombre :string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
+    let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
+    if (especie !== "perro"){
+        if (especie !== "gato"){
+            if (especie !== "exotica"){
+                especie = "exotica";
+            };
+        };
+    };
+    let id :string = idMascota();
+    let nuevoPaciente : Paciente = new Paciente(nombre, especie, id);
+
+    pacientes.push(nuevoPaciente);
+}
+
+//Funcion para validar el ID del dueño
+export let idMascota = () => {
+    let idCliente :string = ReadlineSync.question("Ingrese el ID del dueno: ");
+    for (let i :number = 0; i < clientes.length; i++){
+        if (idCliente === clientes[i].getId()){
+            id = clientes[i].getId();
+        };
+        if (id === ""){
+            console.log("ID invalido");
+            idMascota();
+        };
+    };
+    return id;
+}
+
+//Funcion para modificar un paciente
+export let modificarPaciente = (idOriginal) => {
+    let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre de la mascota: ");
+    let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
+    if (especie !== "perro"){
+        if (especie !== "gato"){
+            if (especie !== "exotica"){
+                especie = "exotica";
+            };
+        };
+    };
+    let id :string = idOriginal;
+    let pacienteModificado : Paciente = new Paciente(nombre, especie, id);
+    
+    return pacienteModificado;
+}
+
+//Función para mostrar los pacientes
+export let mostrarPacientes = () :void => {
+    for (let i :number = 0; i < pacientes.length; i++){
+        console.log("Nombre: " + pacientes[i].getNombre());
+        console.log("Especie: " + pacientes[i].getEspecie());
+        console.log("ID: " + pacientes[i].getId());
+    };
+}
+
+//----------------------------PROVEEDORES--------------------------------
+
+export let agregarProveedor = (proveedor: Array<Proveedor>) :void => {
+    let nombre :string = ReadlineSync.question("Ingrese el nombre del proveedor: ");
+    let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
+    let id :string = generarId(proveedor);
+
+        let idProveedor :string = id;
+        let nuevoProveedor: Proveedor = new Proveedor(nombre, telefono, idProveedor);
+
+        proveedor.push(nuevoProveedor);
+        console.log("Su ID de proveedor es: " + id);
+    }
+ 
+    export let modificarProveedor = (idOriginal: string) => {
+        let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre del proveedor: ");
+        let telefono :number = Number(ReadlineSync.question("Ingrese el nuevo numero de telefono: "));
+        let id :string = idOriginal;
+        let proveedorModificado : Proveedor = new Proveedor(nombre, telefono, id);
+        //agregado
+        for (let i = 0; i < proveedores.length; i++) {
+            if (idOriginal === clientes[i].getId()) {
+                proveedores[i] = proveedorModificado;
+                console.log("Modificado exitosamente");
+            }
+            else 
+            throw new ErrorId("Error de ID al modificar el proveedor")
+     
+        }
+        //agregado
+        return proveedorModificado;
+    }
+    //----------------------------SUCURSALES--------------------------------
+
+    export let agregarSucursal = (sucursal: Array<Sucursal>) :void => {
+        let nombre :string = ReadlineSync.question("Ingrese el nombre de sucursal: ");
+        let direccion :string = ReadlineSync.question("Ingrese direccion: ");
+        let id :string = generarId(sucursal);
+    
+            let idSucursal :string = id;
+            let nuevoSucursal: Sucursal = new Sucursal(nombre, direccion, idSucursal);
+    
+            sucursal.push(nuevoSucursal);
+            console.log("Su ID de sucursal es: " + id);
+        }
+
+        export let modificarSucursal = (idOriginal: string) => {
+            let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre de sucursal: ");
+            let direccion :string = ReadlineSync.question("Ingrese la nueva direccion: ");
+            let id :string = idOriginal;
+            let sucursalModificado : Sucursal = new Sucursal(nombre, direccion, id);
+            //agregado
+            for (let i = 0; i < sucursales.length; i++) {
+                if (idOriginal === sucursales[i].getId()) {
+                    sucursales[i] = sucursalModificado;
+                    console.log("Modificado exitosamente");
+                }
+                else 
+                throw new ErrorId("Error de ID al modificar la sucursal")
+         
+            }
+            //agregado
+            return sucursalModificado;
+        }
