@@ -5,7 +5,7 @@ import Cliente from './Cliente'
 import Paciente from './Paciente'
 
 //Creo la clase Veterinaria
-export default abstract class Veterinaria {
+export default class Veterinaria {
     private sucursales :Array <SucursalVeterinaria>;
     private listaProveedores :Array <Proveedor>;
     private listaClientes :Array <Cliente>;

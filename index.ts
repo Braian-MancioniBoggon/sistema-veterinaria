@@ -1,4 +1,5 @@
 //Importo las clase
+import Veterinaria from './Clases/Veterinaria'
 import SucursalVeterinaria from './Clases/Sucursal'
 import Proveedor from './Clases/Proveedor'
 import Cliente from './Clases/Cliente'
@@ -15,6 +16,7 @@ export let sucursales :Array<SucursalVeterinaria> = [];
 export let proveedores :Array<Proveedor> = [];
 export let clientes :Array<Cliente> = [];
 export let pacientes :Array<Paciente> = [];
+export let red :Veterinaria = new Veterinaria (sucursales, proveedores, clientes, pacientes);
 
 //Preparo la informacion de ejemplo
 let datosSucursales: GestorDeArchivos = new GestorDeArchivos("txt/sucursales.txt");
