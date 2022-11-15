@@ -281,3 +281,21 @@ export let mostrarSucursales = () :void => {
         console.log("ID: " + sucursales[i].getId());
     };
 }
+
+//----------------------------RED--------------------------------
+
+//Función para mostrar la red
+export let mostrarRed = () :void => {
+    console.log("-------------------------------------");
+    console.log("SUCURSALES");
+    console.log("-------------------------------------");
+    mostrarSucursales();
+    console.log("-------------------------------------");
+    console.log("PROVEEDORES");
+    console.log("-------------------------------------");
+    mostrarProveedores();
+    console.log("-------------------------------------");
+    console.log("CLIENTES");
+    console.log("-------------------------------------");
+    mostrarClientes();
+}

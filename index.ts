@@ -8,7 +8,7 @@ import GestorDeArchivos from './lector'
 
 //Importo las funciones
 import {cargarClientes, cargarPacientes, cargarProveedor, cargarSucursal} from './lector';
-import {modificar, borrar, agregarPaciente, modificarPaciente, mostrarPacientes, agregarCliente, modificarCliente, mostrarClientes, agregarProveedor, mostrar, agregarSucursal, modificarProveedor, modificarSucursal, mostrarProveedores, mostrarSucursales} from './helpers';
+import {modificar, borrar, agregarPaciente, modificarPaciente, mostrarPacientes, agregarCliente, modificarCliente, mostrarClientes, agregarProveedor, mostrar, agregarSucursal, modificarProveedor, modificarSucursal, mostrarProveedores, mostrarSucursales, mostrarRed} from './helpers';
 import * as ReadlineSync from 'readline-sync';
 
 //Creo los arreglos que voy a utilizar
