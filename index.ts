@@ -7,7 +7,7 @@ import GestorDeArchivos from './lector'
 
 //Importo las funciones
 import {cargarClientes, cargarPacientes, cargarProveedor, cargarSucursal} from './lector';
-import {modificar, borrar, agregarPaciente, modificarPaciente, mostrarPacientes, agregarCliente, modificarCliente, mostrarClientes, agregarProveedor, mostrar, agregarSucursal, modificarProveedor, modificarSucursal } from './helpers';
+import {modificar, borrar, agregarPaciente, modificarPaciente, mostrarPacientes, agregarCliente, modificarCliente, mostrarClientes, agregarProveedor, mostrar, agregarSucursal, modificarProveedor, modificarSucursal, mostrarProveedores, mostrarSucursales} from './helpers';
 import * as ReadlineSync from 'readline-sync';
 
 //Creo los arreglos que voy a utilizar
@@ -69,7 +69,8 @@ while (opcion != 0) {
             break;
         case 3:
             try {
-                modificarCliente(ReadlineSync.question("Ingrese el ID a modificar: "));
+                //modificarCliente(ReadlineSync.question("Ingrese el ID a modificar: "));
+                modificar(clientes,modificarCliente);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
@@ -85,14 +86,15 @@ while (opcion != 0) {
             }
             break;
         case 5:
-            mostrar(proveedores);
+            mostrarProveedores();
             break;
         case 6:
             agregarProveedor(proveedores);
             break;
         case 7:
             try {
-                modificarProveedor(ReadlineSync.question("Ingrese el ID a modificar: "));
+                //modificarProveedor(ReadlineSync.question("Ingrese el ID a modificar: "));
+                modificar(proveedores,modificarProveedor);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
@@ -108,14 +110,15 @@ while (opcion != 0) {
             }
             break;
         case 9:
-            mostrar(sucursales);
+            mostrarSucursales();
             break;
         case 10:
             agregarSucursal(sucursales);
             break;
         case 11:
             try {
-                modificarSucursal(ReadlineSync.question("Ingrese el ID a modificar: "));
+                //modificarSucursal(ReadlineSync.question("Ingrese el ID a modificar: "));
+                modificar(sucursales,modificarSucursal);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
@@ -134,4 +137,4 @@ while (opcion != 0) {
     }
 
 }
-console.log("Usted a salido del programa");
+console.log("Usted ha salido del programa");

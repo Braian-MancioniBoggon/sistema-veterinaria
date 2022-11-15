@@ -68,12 +68,12 @@ export let modificar = (lista, modificarObjeto) => {
         let objetoModificado = modificarObjeto(lista[posicionArreglo].getId());
         delete lista[posicionArreglo];
         lista[posicionArreglo] = objetoModificado;
-      
+        console.log("Modificado exitosamente");
     } else {
-        throw new ErrorId("El ID no se encuentra en la base de datos");
-        
-           }
-    modificar(lista, modificarObjeto);
+        //throw new ErrorId("El ID no se encuentra en la base de datos");
+        console.log("El ID no se encuentra en la base de datos");
+        modificar(lista, modificarObjeto);    
+    }
 }
 
 //Funcion para borrar
@@ -100,9 +100,10 @@ export let borrar = (lista) => {
     if (coincidencia === 1){
         lista.splice(posicionArreglo,1);
         console.log("El ID fue eliminado exitosamente!")
-     //   return;
     } else {
-        throw new ErrorId("El ID no se encuentra en la base de datos");
+        //throw new ErrorId("El ID no se encuentra en la base de datos");
+        console.log("El ID no se encuentra en la base de datos");
+        borrar(lista);
     }
          
 }
@@ -227,61 +228,56 @@ export let agregarProveedor = (proveedor: Array<Proveedor>) :void => {
     let nombre :string = ReadlineSync.question("Ingrese el nombre del proveedor: ");
     let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
     let id :string = generarId(proveedor);
+    let nuevoProveedor: Proveedor = new Proveedor(nombre, telefono, id);
 
-        let idProveedor :string = id;
-        let nuevoProveedor: Proveedor = new Proveedor(nombre, telefono, idProveedor);
-
-        proveedor.push(nuevoProveedor);
-        console.log("Su ID de proveedor es: " + id);
-    }
+    proveedor.push(nuevoProveedor);
+    console.log("Su ID de proveedor es: " + id);
+}
  
-    export let modificarProveedor = (idOriginal: string) => {
-        let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre del proveedor: ");
-        let telefono :number = Number(ReadlineSync.question("Ingrese el nuevo numero de telefono: "));
-        let id :string = idOriginal;
-        let proveedorModificado : Proveedor = new Proveedor(nombre, telefono, id);
-        //agregado
-        for (let i = 0; i < proveedores.length; i++) {
-            if (idOriginal === clientes[i].getId()) {
-                proveedores[i] = proveedorModificado;
-                console.log("Modificado exitosamente");
-            }
-            else 
-            throw new ErrorId("Error de ID al modificar el proveedor")
-     
-        }
-        //agregado
-        return proveedorModificado;
+export let modificarProveedor = (idOriginal: string) => {
+    let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre del proveedor: ");
+    let telefono :number = Number(ReadlineSync.question("Ingrese el nuevo numero de telefono: "));
+    let id :string = idOriginal;
+    let proveedorModificado : Proveedor = new Proveedor(nombre, telefono, id);
+
+    return proveedorModificado;
+}
+
+//Función para mostrar los proveedores
+export let mostrarProveedores = () :void => {
+    for (let i :number = 0; i < proveedores.length; i++){
+        console.log("Nombre: " + proveedores[i].getNombre());
+        console.log("Telefono: " + proveedores[i].getTelefono());
+        console.log("ID: " + proveedores[i].getId());
     }
-    //----------------------------SUCURSALES--------------------------------
+}
 
-    export let agregarSucursal = (sucursal: Array<Sucursal>) :void => {
-        let nombre :string = ReadlineSync.question("Ingrese el nombre de sucursal: ");
-        let direccion :string = ReadlineSync.question("Ingrese direccion: ");
-        let id :string = generarId(sucursal);
-    
-            let idSucursal :string = id;
-            let nuevoSucursal: Sucursal = new Sucursal(nombre, direccion, idSucursal);
-    
-            sucursal.push(nuevoSucursal);
-            console.log("Su ID de sucursal es: " + id);
-        }
+//----------------------------SUCURSALES--------------------------------
 
-        export let modificarSucursal = (idOriginal: string) => {
-            let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre de sucursal: ");
-            let direccion :string = ReadlineSync.question("Ingrese la nueva direccion: ");
-            let id :string = idOriginal;
-            let sucursalModificado : Sucursal = new Sucursal(nombre, direccion, id);
-            //agregado
-            for (let i = 0; i < sucursales.length; i++) {
-                if (idOriginal === sucursales[i].getId()) {
-                    sucursales[i] = sucursalModificado;
-                    console.log("Modificado exitosamente");
-                }
-                else 
-                throw new ErrorId("Error de ID al modificar la sucursal")
-         
-            }
-            //agregado
-            return sucursalModificado;
-        }
+export let agregarSucursal = (sucursal: Array<Sucursal>) :void => {
+    let nombre :string = ReadlineSync.question("Ingrese el nombre de sucursal: ");
+    let direccion :string = ReadlineSync.question("Ingrese direccion: ");
+    let id :string = generarId(sucursal);
+    let nuevoSucursal: Sucursal = new Sucursal(nombre, direccion, id);
+
+    sucursal.push(nuevoSucursal);
+    console.log("Su ID de sucursal es: " + id);
+}
+
+export let modificarSucursal = (idOriginal: string) => {
+    let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre de sucursal: ");
+    let direccion :string = ReadlineSync.question("Ingrese la nueva direccion: ");
+    let id :string = idOriginal;
+    let sucursalModificado : Sucursal = new Sucursal(nombre, direccion, id);
+
+    return sucursalModificado;
+}
+
+//Función para mostrar los sucursales
+export let mostrarSucursales = () :void => {
+    for (let i :number = 0; i < sucursales.length; i++){
+        console.log("Nombre: " + sucursales[i].getNombre());
+        console.log("Direccion: " + sucursales[i].getDireccion());
+        console.log("ID: " + sucursales[i].getId());
+    };
+}
