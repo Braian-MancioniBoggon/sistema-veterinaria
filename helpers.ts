@@ -103,7 +103,7 @@ export let borrar = (lista) => {
      //   return;
     } else {
         throw new ErrorId("El ID no se encuentra en la base de datos");
-                }
+    }
          
 }
 
