@@ -1,0 +1,1 @@
+Michi,gato,2546;Tobi,perro,8461;Reina,perro,1346;Hercules,exotica,1346
