@@ -1,6 +1,6 @@
 //Importo las clase
 import Veterinaria from './Clases/Veterinaria'
-import SucursalVeterinaria from './Clases/Sucursal'
+import Sucursal from './Clases/Sucursal'
 import Proveedor from './Clases/Proveedor'
 import Cliente from './Clases/Cliente'
 import Paciente from './Clases/Paciente'
@@ -8,11 +8,10 @@ import GestorDeArchivos from './lector'
 
 //Importo las funciones
 import {cargarClientes, cargarPacientes, cargarProveedor, cargarSucursal} from './lector';
-import {modificar, borrar, agregarPaciente, modificarPaciente, mostrarPacientes, agregarCliente, modificarCliente, mostrarClientes, agregarProveedor, mostrar, agregarSucursal, modificarProveedor, modificarSucursal, mostrarProveedores, mostrarSucursales, mostrarRed} from './helpers';
 import * as ReadlineSync from 'readline-sync';
 
 //Creo los arreglos que voy a utilizar
-export let sucursales :Array<SucursalVeterinaria> = [];
+export let sucursales :Array<Sucursal> = [];
 export let proveedores :Array<Proveedor> = [];
 export let clientes :Array<Cliente> = [];
 export let pacientes :Array<Paciente> = [];
@@ -64,15 +63,17 @@ while (opcion != 0) {
     opcion = (ReadlineSync.questionInt("Ingrese opcion: "));
     switch (opcion) {
         case 1:
-            mostrarClientes();
+            //mostrarClientes();
+            red.mostrarClientes();
             break;
         case 2:
-            agregarCliente(clientes);
+            red.agregarCliente();
             break;
         case 3:
             try {
                 //modificarCliente(ReadlineSync.question("Ingrese el ID a modificar: "));
-                modificar(clientes,modificarCliente);
+                //modificar(clientes,modificarCliente);
+                red.modificar(clientes, red.modificarCliente);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
@@ -80,23 +81,25 @@ while (opcion != 0) {
             break;
         case 4:
             try {
-                borrar(clientes);
+                red.borrar(clientes);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
-                borrar(clientes);
+                red.borrar(clientes);
             }
             break;
         case 5:
-            mostrarProveedores();
+            //mostrarProveedores();
+            red.mostrarProveedores();
             break;
         case 6:
-            agregarProveedor(proveedores);
+            red.agregarProveedor();
             break;
         case 7:
             try {
                 //modificarProveedor(ReadlineSync.question("Ingrese el ID a modificar: "));
-                modificar(proveedores,modificarProveedor);
+                //modificar(proveedores,modificarProveedor);
+                red.modificar(proveedores, red.modificarProveedor);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
@@ -104,36 +107,41 @@ while (opcion != 0) {
             break;
         case 8:
             try {
-                borrar(proveedores);
+                red.borrar(proveedores);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
-                borrar(proveedores);
+                red.borrar(proveedores);
             }
             break;
         case 9:
-            mostrarSucursales();
+            //mostrarSucursales();
+            red.mostrarSucursales();
             break;
         case 10:
-            agregarSucursal(sucursales);
+            red.agregarSucursal();
             break;
         case 11:
             try {
                 //modificarSucursal(ReadlineSync.question("Ingrese el ID a modificar: "));
-                modificar(sucursales,modificarSucursal);
+                //modificar(sucursales,modificarSucursal);
+                red.modificar(sucursales, red.modificarSucursal);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
             }
             break;
-        case 12:
-            try {
-                borrar(sucursales);
-            }
-            catch (err) {
-                console.log("Dato Invalido: " + err.message);
-                borrar(sucursales);
-            }
+            case 12:
+                try {
+                    red.borrar(sucursales);
+                }
+                catch (err) {
+                    console.log("Dato Invalido: " + err.message);
+                    red.borrar(sucursales);
+                }
+            break;
+            case 13:
+                red.mostrarRed();
             break;
 
     }
