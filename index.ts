@@ -65,6 +65,7 @@ while (opcion != 0) {
     console.log("16 - Borrar sucursal");
     console.log("-------------------------------------");
     console.log("17 - Mostrar toda la información de la red");
+    console.log("18 - Solicitar turno");
     console.log("-------------------------------------");
     console.log("0 - Salir");
     console.log("-------------------------------------");
@@ -166,6 +167,9 @@ while (opcion != 0) {
         break;
         case 17:
             red.mostrarRed();
+        break;
+        case 18:
+            red.registrarVisita();
         break;
 
     }

@@ -292,4 +292,28 @@ export default class Veterinaria {
         console.log("Su ID de sucursal es: " + id);
     }
 
+    public registrarVisita() :void {
+        let id :string = ReadlineSync.question("Ingrese el ID del cliente: ");
+        let coincidencia :number = 0;
+        let posicionArreglo :number = 0;        
+        for (let i :number = 0; i < this.listaClientes.length; i++){
+            if (id === this.listaClientes[i].getId()){
+                coincidencia = 1;
+                posicionArreglo = i;
+            };
+        };
+        if (coincidencia === 1){
+            this.listaClientes[posicionArreglo].obtenerVip();
+            console.log("El cliente " + this.listaClientes[posicionArreglo].getNombre() + " tiene un total de " + this.listaClientes[posicionArreglo].getRegistroVisitas() + " visitas")
+            this.listaClientes[posicionArreglo].getVip();
+        }  else if (this.intentos < 2){
+            console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
+            this.intentos++;
+            this.registrarVisita();  
+        } else {
+            this.intentos = 0;
+            console.log("Limite de intentos exedido");
+        }
+    }
+
 }
