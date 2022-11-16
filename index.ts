@@ -48,37 +48,43 @@ while (opcion != 0) {
     console.log("2 - Cargar cliente")
     console.log("3 - Modificar cliente");
     console.log("4 - Borrar cliente");
-    console.log("5 - Mostrar proveedores");
-    console.log("6 - Cargar proveedor");
-    console.log("7 - Modificar proveedor");
-    console.log("8 - Borrar proveedor");
-    console.log("9 - Mostrar sucursales");
-    console.log("10 - Cargar sucursal");
-    console.log("11 - Modificar sucursal");
-    console.log("12 - Borrar sucursal");
-
+    console.log("-------------------------------------");
+    console.log("5 - Mostrar pacientes");
+    console.log("6 - Cargar paciente")
+    console.log("7 - Modificar paciente");
+    console.log("8 - Borrar paciente");
+    console.log("-------------------------------------");
+    console.log("9 - Mostrar proveedores");
+    console.log("10 - Cargar proveedor");
+    console.log("11 - Modificar proveedor");
+    console.log("12 - Borrar proveedor");
+    console.log("-------------------------------------");
+    console.log("13 - Mostrar sucursales");
+    console.log("14 - Cargar sucursal");
+    console.log("15 - Modificar sucursal");
+    console.log("16 - Borrar sucursal");
+    console.log("-------------------------------------");
+    console.log("17 - Mostrar toda la información de la red");
+    console.log("-------------------------------------");
     console.log("0 - Salir");
     console.log("-------------------------------------");
 
     opcion = (ReadlineSync.questionInt("Ingrese opcion: "));
     switch (opcion) {
         case 1:
-            //mostrarClientes();
             red.mostrarClientes();
-            break;
+        break;
         case 2:
             red.agregarCliente();
-            break;
+        break;
         case 3:
             try {
-                //modificarCliente(ReadlineSync.question("Ingrese el ID a modificar: "));
-                //modificar(clientes,modificarCliente);
                 red.modificar(clientes, red.modificarCliente);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
             }
-            break;
+        break;
         case 4:
             try {
                 red.borrar(clientes);
@@ -87,25 +93,46 @@ while (opcion != 0) {
                 console.log("Dato Invalido: " + err.message);
                 red.borrar(clientes);
             }
-            break;
+        break;
         case 5:
-            //mostrarProveedores();
-            red.mostrarProveedores();
-            break;
+            red.mostrarPacientes();
+        break;
         case 6:
-            red.agregarProveedor();
-            break;
+            red.agregarPaciente();
+        break;
         case 7:
             try {
-                //modificarProveedor(ReadlineSync.question("Ingrese el ID a modificar: "));
-                //modificar(proveedores,modificarProveedor);
+                red.modificar(pacientes, red.modificarPaciente);
+            }
+            catch (err) {
+                console.log("Dato Invalido: " + err.message);
+                red.modificar(pacientes, red.modificarPaciente);
+            }
+        break;
+        case 8:
+            try {
+                red.borrar(pacientes);
+            }
+            catch (err) {
+                console.log("Dato Invalido: " + err.message);
+                red.borrar(pacientes);
+            }
+        break;
+        case 9:
+            red.mostrarProveedores();
+        break;
+        case 10:
+            red.agregarProveedor();
+        break;
+        case 11:
+            try {
                 red.modificar(proveedores, red.modificarProveedor);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
             }
-            break;
-        case 8:
+        break;
+        case 12:
             try {
                 red.borrar(proveedores);
             }
@@ -113,38 +140,36 @@ while (opcion != 0) {
                 console.log("Dato Invalido: " + err.message);
                 red.borrar(proveedores);
             }
-            break;
-        case 9:
-            //mostrarSucursales();
+        break;
+        case 13:
             red.mostrarSucursales();
-            break;
-        case 10:
+        break;
+        case 14:
             red.agregarSucursal();
-            break;
-        case 11:
+        break;
+        case 15:
             try {
-                //modificarSucursal(ReadlineSync.question("Ingrese el ID a modificar: "));
-                //modificar(sucursales,modificarSucursal);
                 red.modificar(sucursales, red.modificarSucursal);
             }
             catch (err) {
                 console.log("Dato Invalido: " + err.message);
             }
-            break;
-            case 12:
-                try {
-                    red.borrar(sucursales);
-                }
-                catch (err) {
-                    console.log("Dato Invalido: " + err.message);
-                    red.borrar(sucursales);
-                }
-            break;
-            case 13:
-                red.mostrarRed();
-            break;
+        break;
+        case 16:
+            try {
+                red.borrar(sucursales);
+            }
+            catch (err) {
+                console.log("Dato Invalido: " + err.message);
+                red.borrar(sucursales);
+            }
+        break;
+        case 17:
+            red.mostrarRed();
+        break;
 
     }
 
 }
+console.log("");
 console.log("Usted ha salido del programa");

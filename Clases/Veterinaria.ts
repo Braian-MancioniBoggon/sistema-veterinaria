@@ -110,7 +110,7 @@ export default class Veterinaria {
             console.log("Modificado exitosamente");
         } else if (this.intentos < 2){
             //throw new ErrorId("El ID no se encuentra en la base de datos");
-            console.log("El ID no se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
+            console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
             this.intentos++;
             this.modificar(lista, modificarObjeto);  
         } else {
@@ -187,7 +187,7 @@ export default class Veterinaria {
             console.log("El ID fue eliminado exitosamente!")
         } else if (this.intentos < 2){
             //throw new ErrorId("El ID no se encuentra en la base de datos");
-            console.log("El ID no se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
+            console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
             this.intentos++;
             this.borrar(lista);  
         } else {
