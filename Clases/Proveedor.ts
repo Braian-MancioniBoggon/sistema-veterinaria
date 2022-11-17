@@ -1,3 +1,4 @@
+//Creo la clase Proveedor
 export default class Proveedor{
     protected nombre :string;
     protected telefono :number;

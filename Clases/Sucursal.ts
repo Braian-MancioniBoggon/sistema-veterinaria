@@ -1,3 +1,4 @@
+//Creo la clase Sucursal
 export default class Sucursal {
     protected nombre :string;
     protected direccion :string;

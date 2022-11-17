@@ -33,7 +33,9 @@ export default class Cliente {
     }
 
     public obtenerVip() :void{
+        //Registro la visita del cliente
         this.registroVisitas++;
+        //Si la cantidad de visitas es mayor o igual a 5 se le otorga el Vip
         if (this.registroVisitas >= 5){
             this.vip = true;
         };
