@@ -119,15 +119,15 @@ export default class Veterinaria {
                 this.intentos = 0;
                 //Se llama al metodo validarMascota para verificar la mascota a editar
                 this.validarNombreMascota(eleccionId);
-            //En el caso que se quiera editar otra cosa
-            } else {
-                //Reviso en el arreglo correspondiente para ver si hay coincidencia
-                for (let i: number = 0; i < lista.length; i++) {
-                    //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
-                    if (eleccionId === lista[i].getId()) {
-                        coincidencia = 1;
-                        this.posicionArreglo = i;
-                    };
+            } 
+        //En el caso que se quiera editar otra cosa
+        } else {
+            //Reviso en el arreglo correspondiente para ver si hay coincidencia
+            for (let i: number = 0; i < lista.length; i++) {
+                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
+                if (eleccionId === lista[i].getId()) {
+                    coincidencia = 1;
+                    this.posicionArreglo = i;
                 };
             };
         };
@@ -244,13 +244,13 @@ export default class Veterinaria {
     correspondiente al tipo de objeto se quiere borrar*/
     public borrar(lista) {
         //Pido el ID de lo que se quiera borrar
-        let eleccionId: string = ReadlineSync.question("Ingrese el ID a eliminar: ");
+        let eleccionId: string = ReadlineSync.question("Ingrese el ID a modificar: ");
         //Declaro las dos variables que voy a utilizar para encontrar y borrar el objeto deseado
         let coincidencia: number = 0;
         /*Consulto si lo que quiero borrar es un paciente porque las mascotas tienen el ID del dueño
-        y si hay mas de una mascota necesito un segundo dato para saber cual borrar*/
+        y si hay mas de una mascota necesito un segundo dato para saber cual borrar */
         if (lista === pacientes) {
-            //Reviso en el arreglo correspondiente para ver si hay coincidencia
+           //Reviso en el arreglo correspondiente para ver si hay coincidencia
             for (let i: number = 0; i < lista.length; i++) {
                 //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
                 if (eleccionId === lista[i].getId()) {
@@ -263,15 +263,15 @@ export default class Veterinaria {
                 this.intentos = 0;
                 //Se llama al metodo validarMascota para verificar la mascota a borrar
                 this.validarNombreMascota(eleccionId);
-            //En el caso que se quiera borrar otra cosa
-            } else {
-                //Reviso en el arreglo correspondiente para ver si hay coincidencia
-                for (let i: number = 0; i < lista.length; i++) {
-                    //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
-                    if (eleccionId === lista[i].getId()) {
-                        coincidencia = 1;
-                        this.posicionArreglo = i;
-                    };
+            }
+        //En el caso que se quiera borrar otra cosa
+        } else {
+            //Reviso en el arreglo correspondiente para ver si hay coincidencia
+            for (let i: number = 0; i < lista.length; i++) {
+                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
+                if (eleccionId === lista[i].getId()) {
+                    coincidencia = 1;
+                    this.posicionArreglo = i;
                 };
             };
         };
