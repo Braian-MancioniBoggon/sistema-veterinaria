@@ -19,6 +19,7 @@ export default class Veterinaria {
     private listaPacientes :Array <Paciente>;
     private idPaciente :string;
     private intentos :number;
+    private posicionArreglo: number;
 
     public constructor(sucursales :Array <Sucursal>, listaProveedores :Array <Proveedor>, listaClientes :Array <Cliente>, listaPacientes :Array <Paciente>) {
         this.sucursales = sucursales;
@@ -27,6 +28,7 @@ export default class Veterinaria {
         this.listaPacientes = listaPacientes;
         this.idPaciente = "";
         this.intentos = 0;
+        this.posicionArreglo = 0;
     }
 
     //Metodo para mostrar sucursales
@@ -101,62 +103,45 @@ export default class Veterinaria {
         let eleccionId: string = ReadlineSync.question("Ingrese el ID a modificar: ");
         //Declaro las dos variables que voy a utilizar para encontrar y modificar el objeto deseado
         let coincidencia: number = 0;
-        let posicionArreglo: number = 0;
         /*Consulto si lo que quiero modificar es un paciente porque las mascotas tienen el ID del dueño
         y si hay mas de una mascota necesito un segundo dato para saber cual modificar*/
         if (lista === pacientes) {
-            //Reviso en el arreglo correspondiente para ver si hay coincidencia
+           //Reviso en el arreglo correspondiente para ver si hay coincidencia
             for (let i: number = 0; i < lista.length; i++) {
                 //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
                 if (eleccionId === lista[i].getId()) {
                     coincidencia = 1;
-                    posicionArreglo = i;
                 };
             };
             //Si hay coincidencia
             if (coincidencia === 1) {
-                //Pido el nombre de la mascota
-                let eleccionNombre: string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
-                //Reviso en el arreglo de pacientes para ver si hay coincidencia
+                //Se reinicia el contador de intentos
+                this.intentos = 0;
+                //Se llama al metodo validarMascota para verificar la mascota a editar
+                this.validarNombreMascota(eleccionId);
+            //En el caso que se quiera editar otra cosa
+            } else {
+                //Reviso en el arreglo correspondiente para ver si hay coincidencia
                 for (let i: number = 0; i < lista.length; i++) {
                     //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
-                    if (eleccionId === lista[i].getId() && eleccionNombre === lista[i].getNombre()) {
+                    if (eleccionId === lista[i].getId()) {
                         coincidencia = 1;
-                        posicionArreglo = i;
+                        this.posicionArreglo = i;
                     };
-                };
-            //Si no hay coincidencia hay 3 intentos hasta que se ingrese un nombre valido
-            } else if (this.intentos < 2){
-                console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
-                //Se van sumando los intentos
-                this.intentos++;
-                //Se vuelve a llamar al metodo modificar para realizar otro intento
-                this.modificar(lista,modificarObjeto); 
-            //Si se superan los 3 intentos
-            } else if (this.intentos >= 2){
-                //Se reinicia el contador de intentos y se vuelve al menu
-                this.intentos=0;
-                throw new ErrorId("El nombre no se encuentra en la base de datos");
-            }
-        //En el caso que se quiera modificar otra cosa
-        } else {
-            //Reviso en el arreglo correspondiente para ver si hay coincidencia
-            for (let i: number = 0; i < lista.length; i++) {
-                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
-                if (eleccionId === lista[i].getId()) {
-                    coincidencia = 1;
-                    posicionArreglo = i;
                 };
             };
         };
         //Si hay coincidencia
         if (coincidencia === 1) {
+            //Se reinicia el contador de intentos
+            this.intentos=0;
+            let objetoModificado;
             //Creo un nuevo objeto con los datos actualizados para reemplazar el objeto original
-            let objetoModificado = modificarObjeto(lista[posicionArreglo].getId());
+            objetoModificado = modificarObjeto(lista[(this.posicionArreglo)].getId());
             //Borro el objeto original
-            delete lista[posicionArreglo];
+            delete lista[this.posicionArreglo];
             //Coloco el objeto nuevo en su lugar
-            lista[posicionArreglo] = objetoModificado;
+            lista[this.posicionArreglo] = objetoModificado;
             console.log("Modificado exitosamente");
         //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
         } else if (this.intentos < 2){
@@ -169,9 +154,43 @@ export default class Veterinaria {
         } else if (this.intentos >= 2){
             //Se reinicia el contador de intentos y se vuelve al menu
             this.intentos=0;
+            throw new ErrorId("El nombre no se encuentra en la base de datos");
+        };
+    }
+
+    //Metodo para validar el nombre de mascota ingresado
+    public validarNombreMascota(eleccionId :string) {
+        let coincidencia :number = 0;
+        //Se reinicia el contador de intentos
+        this.posicionArreglo = 0;
+        //Pido el nombre de la mascota
+        let eleccionNombre: string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
+        //Reviso en el arreglo de pacientes para ver si hay coincidencia
+        for (let i: number = 0; i < this.listaPacientes.length; i++) {
+            //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para localizar la mascota
+            if (eleccionId === this.listaPacientes[i].getId() && eleccionNombre === this.listaPacientes[i].getNombre()) {
+                coincidencia = 1;
+                this.posicionArreglo = i;
+            };
+        //Si hay coincidencia
+        }if (coincidencia === 1) {
+            //Se reinicia el contador de intentos
+            this.intentos = 0;
+        //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
+        } else if (this.intentos < 2){
+            //Se van sumando los intentos
+            this.intentos++;
+            console.log("No se encuentra dicho nombre de mascota, restan " + (3 - this.intentos) + " intentos.");
+            //Se vuelve a llamar al metodo validaMascota para realizar otro intento
+            this.validarNombreMascota(eleccionId);
+        //Si se superan los 3 intentos
+        } else if (this.intentos >= 2){
+            //Se reinicia el contador de intentos y se vuelve al menu
+            this.intentos = 0;
             throw new ErrorId("El ID no se encuentra en la base de datos");
         };
     }
+
 
 
     //Metodo para modificar clientes
@@ -228,35 +247,40 @@ export default class Veterinaria {
         let eleccionId: string = ReadlineSync.question("Ingrese el ID a eliminar: ");
         //Declaro las dos variables que voy a utilizar para encontrar y borrar el objeto deseado
         let coincidencia: number = 0;
-        let posicionArreglo: number = 0;
         /*Consulto si lo que quiero borrar es un paciente porque las mascotas tienen el ID del dueño
         y si hay mas de una mascota necesito un segundo dato para saber cual borrar*/
         if (lista === pacientes) {
-            //Pido el nombre de la mascota
-            let eleccionNombre: string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
-            //Reviso en el arreglo de pacientes para ver si hay coincidencia
-            for (let i: number = 0; i < lista.length; i++) {
-                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
-                if (eleccionId === lista[i].getId() && eleccionNombre === lista[i].getNombre()) {
-                    coincidencia = 1;
-                    posicionArreglo = i;
-                };
-            };
-        //En el caso que se quiera borrar otra cosa
-        } else {
             //Reviso en el arreglo correspondiente para ver si hay coincidencia
             for (let i: number = 0; i < lista.length; i++) {
                 //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
                 if (eleccionId === lista[i].getId()) {
                     coincidencia = 1;
-                    posicionArreglo = i;
+                };
+            };
+            //Si hay coincidencia
+            if (coincidencia === 1) {
+                //Se reinicia el contador de intentos
+                this.intentos = 0;
+                //Se llama al metodo validarMascota para verificar la mascota a borrar
+                this.validarNombreMascota(eleccionId);
+            //En el caso que se quiera borrar otra cosa
+            } else {
+                //Reviso en el arreglo correspondiente para ver si hay coincidencia
+                for (let i: number = 0; i < lista.length; i++) {
+                    //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
+                    if (eleccionId === lista[i].getId()) {
+                        coincidencia = 1;
+                        this.posicionArreglo = i;
+                    };
                 };
             };
         };
         //Si hay coincidencia
         if (coincidencia === 1) {
+            //Se reinicia el contador de intentos
+            this.intentos = 0;
             //Elimino la posición correspondiente del arreglo
-            lista.splice(posicionArreglo, 1);
+            lista.splice(this.posicionArreglo, 1);
             console.log("El ID fue eliminado exitosamente!")
         //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
         } else if (this.intentos < 2){
@@ -265,15 +289,13 @@ export default class Veterinaria {
             this.intentos++;
             //Se vuelve a llamar al metodo borrar para realizar otro intento
             this.borrar(lista);  
-        } else (this.intentos == 3);
+        } else if (this.intentos >= 2){
             //Se reinicia el contador de intentos y se vuelve al menu
-            this.intentos=0;
+            this.intentos = 0;
             throw new ErrorId("El ID no se encuentra en la base de datos");
-        
+        };
     }
              
-    
-
     /*Metodo para generar un ID y corroborar que sea unico , se tiene que pasar como parametros el arreglo
     correspondiente al tipo de objeto que se le va a asignar un ID*/
     public generarId (lista) {
@@ -432,5 +454,4 @@ export default class Veterinaria {
             console.log("Limite de intentos exedido");
         };
     }
-
 }
