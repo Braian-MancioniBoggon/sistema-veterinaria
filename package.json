@@ -1,0 +1,23 @@
+{
+  "name": "sistema-veterinaria",
+  "version": "1.0.0",
+  "description": "Nuestro cliente es una red de veterinarias y desea poder acceder a la siguiente información:\r - Sucursales de Veterinarias\r - Clientes\r - Pacientes (mascotas)\r - Proveedores",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Braian-MancioniBoggon/sistema-veterinaria.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Braian-MancioniBoggon/sistema-veterinaria/issues"
+  },
+  "homepage": "https://github.com/Braian-MancioniBoggon/sistema-veterinaria#readme",
+  "dependencies": {
+    "@types/node": "^18.11.9",
+    "readline-sync": "^1.4.10"
+  }
+}
