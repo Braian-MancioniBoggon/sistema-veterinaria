@@ -425,7 +425,6 @@ export default class Veterinaria {
         for (let i :number = 0; i < this.listaClientes.length; i++){
             //Si hay coincidencia asigno el id a la variable "idCliente"
             if (idCliente === this.listaClientes[i].getId()){
-                //this.idPaciente = this.listaClientes[i].getId();
                 coincidencia = 1;
                 posicionArreglo = i;
             };
@@ -447,15 +446,6 @@ export default class Veterinaria {
             console.log("");
             console.log("Limite de intentos exedido");
         };
-
-        /*
-        //Si la variable "idCliente" esta vacia se muestra que el ID es invalido
-        if (this.idPaciente === ""){
-            console.log("ID invalido");
-            this.idMascota();
-        };
-        */
-        
         //Devuelvo el contenido de "idCliente" para ser asignado como ID de la mascota
         return this.idPaciente;
     }
