@@ -1,3 +1,4 @@
+//Importo las clases
 import {pacientes} from "../index"
 
 //Creo la clase Cliente
@@ -7,6 +8,7 @@ export default class Cliente {
     private vip :boolean;
     private id :string;
     private registroVisitas :number;
+    private sucursal :string;
 
     public constructor(nombre :string, telefono :number, id :string) {
         this.nombre = nombre;
@@ -61,6 +63,7 @@ export default class Cliente {
         };
     }
 
+    //Metodo para calcular la cantidad de mascotas registradas que tiene un cliente
     public cantidadMascotas = () :number =>{
         let cantidad :number = 0;
         //Recorro el arreglo de pacientes
@@ -76,5 +79,14 @@ export default class Cliente {
 
     public getRegistroVisitas() :number {
         return this.registroVisitas;
+    }
+
+    //Metodo para asignar una sucursal como la principal del cliente
+    public sucursalPrincipal(sucursal :string) :void {
+        this.sucursal = sucursal;
+    }
+
+    public getSucursal() :string{
+        return this.sucursal;
     }
 }

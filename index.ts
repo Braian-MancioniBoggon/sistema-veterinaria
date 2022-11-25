@@ -7,7 +7,10 @@ import Paciente from './Clases/Paciente'
 import GestorDeArchivos from './lector'
 
 //Importo las funciones
+import {separador} from './helpers';
 import {cargarClientes, cargarPacientes, cargarProveedor, cargarSucursal} from './lector';
+
+//Importo las librerias que voy a utilizar
 import * as ReadlineSync from 'readline-sync';
 
 //Creo los arreglos que voy a utilizar
@@ -46,34 +49,41 @@ for (let i :number = 0; i < datosPacientes.getArregloTxt().length; i++){
 //Creo la variable que voy a utilizar para la selección en el menu
 let opcion: number = -1;
 
+//Asignacion de sucursal a lientes como ejemplo
+red.asignarSucursalEjemplo("1346","Tu mascota");
+red.asignarSucursalEjemplo("2546","Compania de mascotas");
+red.asignarSucursalEjemplo("8461","Compania de mascotas");
+
 //Menu
 while (opcion != 0) {
-    console.log("-------------------------------------");
+    separador();
     console.log("1 - Mostrar clientes");
     console.log("2 - Cargar cliente")
     console.log("3 - Modificar cliente");
     console.log("4 - Borrar cliente");
-    console.log("-------------------------------------");
+    separador();
     console.log("5 - Mostrar pacientes");
     console.log("6 - Cargar paciente")
     console.log("7 - Modificar paciente");
     console.log("8 - Borrar paciente");
-    console.log("-------------------------------------");
+    separador();
     console.log("9 - Mostrar proveedores");
     console.log("10 - Cargar proveedor");
     console.log("11 - Modificar proveedor");
     console.log("12 - Borrar proveedor");
-    console.log("-------------------------------------");
+    separador();
     console.log("13 - Mostrar sucursales");
-    console.log("14 - Cargar sucursal");
-    console.log("15 - Modificar sucursal");
-    console.log("16 - Borrar sucursal");
-    console.log("-------------------------------------");
-    console.log("17 - Mostrar toda la información de la red");
-    console.log("18 - Solicitar turno");
-    console.log("-------------------------------------");
+    console.log("14 - Mostrar información sucursal");
+    console.log("15 - Cargar sucursal");
+    console.log("16 - Modificar sucursal");
+    console.log("17 - Modificar sucursal principal de un cliente");
+    console.log("18 - Borrar sucursal");
+    separador();
+    console.log("19 - Mostrar toda la información de la red");
+    console.log("20 - Solicitar turno");
+    separador();
     console.log("0 - Salir");
-    console.log("-------------------------------------");
+    separador();
 
     //Pido el numero de la opción del menu
     opcion = (ReadlineSync.questionInt("Ingrese opcion: "));
@@ -110,7 +120,7 @@ while (opcion != 0) {
         break;
         //Agregar paciente
         case 6:
-            red.agregarPaciente();
+            red.consultaDeCliente();
         break;
         //Modificar paciente
         case 7:
@@ -160,12 +170,16 @@ while (opcion != 0) {
         case 13:
             red.mostrarSucursales();
         break;
-        //Agregar sucursal
+        //Mostrar sucursal
         case 14:
+            red.mostrarSucursal();
+        break;
+        //Agregar sucursal
+        case 15:
             red.agregarSucursal();
         break;
         //Modificar sucursal
-        case 15:
+        case 16:
             try {
                 red.modificar(sucursales, red.modificarSucursal);
             }
@@ -173,8 +187,17 @@ while (opcion != 0) {
                 console.log("Dato Invalido: " + err.message);
             }
         break;
+        //Modificar sucursal principal de un cliente
+        case 17:
+            try {
+                red.modificarSucursalPrincipal();
+            }
+            catch (err) {
+                console.log("Dato Invalido: " + err.message);
+            }
+        break;
         //Borrar sucursal
-        case 16:
+        case 18:
             try {
                 red.borrar(sucursales);
             }
@@ -183,15 +206,14 @@ while (opcion != 0) {
             }
         break;
         //Mostrar toda la información de la red
-        case 17:
+        case 19:
             red.mostrarRed();
         break;
         //Registrar visitas
-        case 18:
+        case 20:
             red.registrarVisita();
         break;
     };
-
 };
 console.log("");
 console.log("Usted ha salido del programa");
