@@ -54,6 +54,7 @@ export default class Cliente {
         for (let i :number = 0; i < pacientes.length; i++){
             //Busco coincidencia con el ID del cliente para mostrar solo sus mascotas por consola
             if (this.id === pacientes[i].getId()){
+                console.log("");
                 console.log("   -Nombre de la mascota: " + pacientes[i].getNombre());
                 console.log("    Especie: " + pacientes[i].getEspecie());
             };

@@ -33,6 +33,7 @@ export default class Veterinaria {
 
     //Metodo para mostrar sucursales
     public mostrarSucursales() :void {
+        console.log("");
         //Recorro el arreglo que contiene las sucursales y las voy mostrando por consola
         for (let i :number = 0; i < this.sucursales.length; i++){
             console.log("Nombre: " + this.sucursales[i].getNombre());
@@ -44,6 +45,7 @@ export default class Veterinaria {
 
     //Metodo para mostrar proveedores
     public mostrarProveedores() :void {
+        console.log("");
         //Recorro el arreglo que contiene los proveedores y los voy mostrando por consola
         for (let i :number = 0; i < this.listaProveedores.length; i++){
             console.log("Nombre: " + this.listaProveedores[i].getNombre());
@@ -55,6 +57,7 @@ export default class Veterinaria {
 
     //Metodo para mostrar clientes y sus respectivas mascotas
     public mostrarClientes() :void {
+        console.log("");
         //Recorro el arreglo que contiene los clientes y los voy mostrando por consola
         for (let i :number = 0; i < this.listaClientes.length; i++){
             console.log("Nombre: " + this.listaClientes[i].getNombre());
@@ -71,6 +74,7 @@ export default class Veterinaria {
 
     //Metodo para mostrar pacientes
     public mostrarPacientes() :void {
+        console.log("");
         //Recorro el arreglo que contiene los pacientes y los voy mostrando por consola
         for (let i :number = 0; i < this.listaPacientes.length; i++){
             console.log("Nombre: " + this.listaPacientes[i].getNombre());
@@ -99,22 +103,35 @@ export default class Veterinaria {
     /*Metodo para modificar objetos, se tiene que pasar como parametros el arreglo
     y el metodo "modificar" correspondiente al tipo de objeto se quiere modificar*/
     public modificar(lista, modificarObjeto) {
+        console.log("");
         //Pido el ID de lo que se quiera modificar
         let eleccionId: string = ReadlineSync.question("Ingrese el ID a modificar: ");
-        //Declaro las dos variables que voy a utilizar para encontrar y modificar el objeto deseado
+        //Declaro la variable que voy a utilizar para encontrar y modificar el objeto deseado
         let coincidencia: number = 0;
+        //Declaro la variable donde se va a guardar la posicion del cliente en el arreglo de clientes
+        let cliente: number = 0;
         /*Consulto si lo que quiero modificar es un paciente porque las mascotas tienen el ID del dueño
         y si hay mas de una mascota necesito un segundo dato para saber cual modificar*/
         if (lista === pacientes) {
            //Reviso en el arreglo correspondiente para ver si hay coincidencia
             for (let i: number = 0; i < lista.length; i++) {
-                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para realizar la modificación
+                //Si hay coincidencia asigno a la variable "coincidencia" el valor 1 demostrando que el ID fue encontrado
                 if (eleccionId === lista[i].getId()) {
                     coincidencia = 1;
                 };
             };
             //Si hay coincidencia
             if (coincidencia === 1) {
+                //Recorro el areglo de clientes para buscar y guardar la posicion del cliente ingresado
+                for (let i: number = 0; i < this.listaClientes.length; i++) {
+                    if (eleccionId === this.listaClientes[i].getId()) {
+                        cliente = i;
+                    };
+                };
+                console.log("Las mascotas a cargo del cliente " + this.listaClientes[cliente].getNombre() + " son: ");
+                //Muestro las mascotas a cargo del cliente
+                this.listaClientes[cliente].mostrarMascotas();
+                console.log("");
                 //Se reinicia el contador de intentos
                 this.intentos = 0;
                 //Se llama al metodo validarMascota para verificar la mascota a editar
@@ -142,9 +159,11 @@ export default class Veterinaria {
             delete lista[this.posicionArreglo];
             //Coloco el objeto nuevo en su lugar
             lista[this.posicionArreglo] = objetoModificado;
+            console.log("");
             console.log("Modificado exitosamente");
         //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
         } else if (this.intentos < 2){
+            console.log("");
             console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
             //Se van sumando los intentos
             this.intentos++;
@@ -154,6 +173,7 @@ export default class Veterinaria {
         } else if (this.intentos >= 2){
             //Se reinicia el contador de intentos y se vuelve al menu
             this.intentos=0;
+            console.log("");
             throw new ErrorId("El nombre no se encuentra en la base de datos");
         };
     }
@@ -163,6 +183,7 @@ export default class Veterinaria {
         let coincidencia :number = 0;
         //Se reinicia el contador de intentos
         this.posicionArreglo = 0;
+        console.log("");
         //Pido el nombre de la mascota
         let eleccionNombre: string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
         //Reviso en el arreglo de pacientes para ver si hay coincidencia
@@ -180,6 +201,7 @@ export default class Veterinaria {
         } else if (this.intentos < 2){
             //Se van sumando los intentos
             this.intentos++;
+            console.log("");
             console.log("No se encuentra dicho nombre de mascota, restan " + (3 - this.intentos) + " intentos.");
             //Se vuelve a llamar al metodo validaMascota para realizar otro intento
             this.validarNombreMascota(eleccionId);
@@ -187,6 +209,7 @@ export default class Veterinaria {
         } else if (this.intentos >= 2){
             //Se reinicia el contador de intentos y se vuelve al menu
             this.intentos = 0;
+            console.log("");
             throw new ErrorId("El ID no se encuentra en la base de datos");
         };
     }
@@ -243,22 +266,35 @@ export default class Veterinaria {
     /*Metodo para borrar objetos, se tiene que pasar como parametros el arreglo
     correspondiente al tipo de objeto se quiere borrar*/
     public borrar(lista) {
+        console.log("");
         //Pido el ID de lo que se quiera borrar
         let eleccionId: string = ReadlineSync.question("Ingrese el ID a modificar: ");
-        //Declaro las dos variables que voy a utilizar para encontrar y borrar el objeto deseado
+        //Declaro la variable que voy a utilizar para encontrar y borrar el objeto deseado
         let coincidencia: number = 0;
+        //Declaro la variable donde se va a guardar la posicion del cliente en el arreglo de clientes
+        let cliente: number = 0;
         /*Consulto si lo que quiero borrar es un paciente porque las mascotas tienen el ID del dueño
         y si hay mas de una mascota necesito un segundo dato para saber cual borrar */
         if (lista === pacientes) {
            //Reviso en el arreglo correspondiente para ver si hay coincidencia
             for (let i: number = 0; i < lista.length; i++) {
-                //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
+                //Si hay coincidencia asigno a la variable "coincidencia" el valor 1 demostrando que el ID fue encontrado
                 if (eleccionId === lista[i].getId()) {
                     coincidencia = 1;
                 };
             };
             //Si hay coincidencia
             if (coincidencia === 1) {
+                //Recorro el areglo de clientes para buscar y guardar la posicion del cliente ingresado
+                for (let i: number = 0; i < this.listaClientes.length; i++) {
+                    if (eleccionId === this.listaClientes[i].getId()) {
+                        cliente = i;
+                    };
+                };
+                console.log("Las mascotas a cargo del cliente " + this.listaClientes[cliente].getNombre() + " son: ");
+                //Muestro las mascotas a cargo del cliente
+                this.listaClientes[cliente].mostrarMascotas();
+                console.log("");
                 //Se reinicia el contador de intentos
                 this.intentos = 0;
                 //Se llama al metodo validarMascota para verificar la mascota a borrar
@@ -281,9 +317,11 @@ export default class Veterinaria {
             this.intentos = 0;
             //Elimino la posición correspondiente del arreglo
             lista.splice(this.posicionArreglo, 1);
+            console.log("");
             console.log("El ID fue eliminado exitosamente!")
         //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
         } else if (this.intentos < 2){
+            console.log("");
             console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
             //Se van sumando los intentos
             this.intentos++;
@@ -292,6 +330,7 @@ export default class Veterinaria {
         } else if (this.intentos >= 2){
             //Se reinicia el contador de intentos y se vuelve al menu
             this.intentos = 0;
+            console.log("");
             throw new ErrorId("El ID no se encuentra en la base de datos");
         };
     }
@@ -319,6 +358,7 @@ export default class Veterinaria {
 
     //Metodo para agregar clientes
     public agregarCliente () :void {
+        console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre del cliente: ");
         let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
         //Genero un ID unico para el cliente
@@ -345,6 +385,7 @@ export default class Veterinaria {
             this.listaPacientes.push(nuevoPaciente);
         }
         let nuevoCliente : Cliente = new Cliente(nombre, telefono, id);
+        console.log("");
         //Despues de crear el cliente muestro su ID
         console.log("Su ID es: " + id);
     
@@ -353,6 +394,7 @@ export default class Veterinaria {
 
     //Metodo para agregar pacientes
     public agregarPaciente () :void {
+        console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
         //Pido la especie de la mascota
         let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
@@ -366,26 +408,43 @@ export default class Veterinaria {
         };
         //Asigno el ID del cliente a la mascota
         let id :string = this.idMascota();
-        let nuevoPaciente : Paciente = new Paciente(nombre, especie, id);
-    
-        this.listaPacientes.push(nuevoPaciente);
+        if (id !== ""){
+            let nuevoPaciente : Paciente = new Paciente(nombre, especie, id);
+            this.listaPacientes.push(nuevoPaciente);
+        };
     }
     
     //Metodo para asignarle el ID de un cliente a su mascota
     public idMascota () {
         //Pido el ID del cliente
         let idCliente :string = ReadlineSync.question("Ingrese el ID del dueno: ");
+        //Declaro las dos variables que voy a utilizar para encontrar al cliente y registrar su visita
+        let coincidencia :number = 0;
+        let posicionArreglo :number = 0;
         //Recorro el arreglo de clientes para ver si hay coincidencia
         for (let i :number = 0; i < this.listaClientes.length; i++){
             //Si hay coincidencia asigno el id a la variable "idCliente"
             if (idCliente === this.listaClientes[i].getId()){
-                this.idPaciente = this.listaClientes[i].getId();
+                coincidencia = 1;
+                posicionArreglo = i;
             };
         };
-        //Si la variable "idCliente" esta vacia se muestra que el ID es invalido
-        if (this.idPaciente === ""){
-            console.log("ID invalido");
+        
+        if (coincidencia === 1) {
+            this.idPaciente = this.listaClientes[posicionArreglo].getId();
+        } else if (this.intentos < 2){
+            console.log("");
+            console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
+            //Se van sumando los intentos
+            this.intentos++;
+            //Se vuelve a llamar al metodo idMascota para realizar otro intento
             this.idMascota();
+        //Si se superan los 3 intentos
+        } else {
+            //Se reinicia el contador de intentos y se vuelve al menu
+            this.intentos = 0;
+            console.log("");
+            console.log("Limite de intentos exedido");
         };
         //Devuelvo el contenido de "idCliente" para ser asignado como ID de la mascota
         return this.idPaciente;
@@ -393,6 +452,7 @@ export default class Veterinaria {
 
     //Metodo para agregar proveedores
     public agregarProveedor () :void {
+        console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre del proveedor: ");
         let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
         //Genero un ID unico para el proveedor
@@ -406,6 +466,7 @@ export default class Veterinaria {
 
     //Metodo para agregar sucursales
     public agregarSucursal () :void {
+        console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre de sucursal: ");
         let direccion :string = ReadlineSync.question("Ingrese direccion: ");
         //Genero un ID unico para la sucursal
@@ -419,6 +480,7 @@ export default class Veterinaria {
 
     //Metodo para registrar visitas de clientes
     public registrarVisita() :void {
+        console.log("");
         //Pido el ID del cliente que va a registrar su visita
         let id :string = ReadlineSync.question("Ingrese el ID del cliente: ");
         //Declaro las dos variables que voy a utilizar para encontrar al cliente y registrar su visita
@@ -436,21 +498,24 @@ export default class Veterinaria {
         if (coincidencia === 1){
             //Llamo al metodo obtenerVip de la clase Cliente
             this.listaClientes[posicionArreglo].obtenerVip();
+            console.log("");
             //Indico la cantidad de visitas registradas que tiene el cliente utilizando los metodos getNombre y getRegistroVisitas de la clase Cliente
             console.log("El cliente " + this.listaClientes[posicionArreglo].getNombre() + " tiene un total de " + this.listaClientes[posicionArreglo].getRegistroVisitas() + " visitas");
             //Utilizo el metodo getVip para mostrar si el cliente es Vip o no
             this.listaClientes[posicionArreglo].getVip();
         //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
         }  else if (this.intentos < 2){
+            console.log("");
             console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
             //Se van sumando los intentos
             this.intentos++;
-            //Se vuelve a llamar a la funcion registrarVisita para realizar otro intento
+            //Se vuelve a llamar al metodo registrarVisita para realizar otro intento
             this.registrarVisita();
         //Si se superan los 3 intentos
         } else {
             //Se reinicia el contador de intentos y se vuelve al menu
             this.intentos = 0;
+            console.log("");
             console.log("Limite de intentos exedido");
         };
     }
