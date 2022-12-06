@@ -8,8 +8,9 @@ import ErrorId from './ErrorId'
 //Importo las librerias que voy a utilizar
 import * as ReadlineSync from 'readline-sync';
 
-//Importo las funciones
-import {pacientes} from '../index';
+//Importo las funciones y arreglos
+import {pacientes, sucursales} from '../index';
+import {separador, primeraLetraMayuscula} from '../helpers';
 
 //Creo la clase Veterinaria
 export default class Veterinaria {
@@ -31,6 +32,15 @@ export default class Veterinaria {
         this.posicionArreglo = 0;
     }
 
+    //Asignacion de sucursal a clientes como ejemplo
+    public asignarSucursalEjemplo(id :string, sucursal :string) :void {
+        for (let i :number = 0; i < this.listaClientes.length; i++){
+            if (id === this.listaClientes[i].getId()){
+                return this.listaClientes[i].sucursalPrincipal(sucursal);
+            }
+        }
+    }
+
     //Metodo para mostrar sucursales
     public mostrarSucursales() :void {
         console.log("");
@@ -40,6 +50,44 @@ export default class Veterinaria {
             console.log("Direccion: " + this.sucursales[i].getDireccion());
             console.log("ID: " + this.sucursales[i].getId());
             console.log("");
+        };
+    }
+
+    //Metodo para mostrar toda la informacion de una sola sucursal
+    public mostrarSucursal() :void {
+        console.log("");
+        console.log("Sucursales activas")
+        separador();
+        //Recorro el arreglo que contiene las sucursales y voy mostrando sus nombre por consola
+        for (let i :number = 0; i < this.sucursales.length; i++){
+            console.log("- " + this.sucursales[i].getNombre());
+        };
+        separador();
+        //Pido el nombre de la nueva sucursal principal y la valido con el siguiente metodo
+        this.validarNuevaSucursalPrincipal();
+        console.log("");
+        //Recorro el arreglo que contiene las sucursales para encontrar la sucursal solicitada
+        for (let i :number = 0; i < this.sucursales.length; i++){
+            if (this.sucursales[this.posicionArreglo].getNombre() === this.sucursales[i].getNombre()){
+                console.log("Nombre: " + this.sucursales[i].getNombre());
+                console.log("Direccion: " + this.sucursales[i].getDireccion());
+                console.log("ID: " + this.sucursales[i].getId());
+                console.log("");
+                //Recorro el arreglo que contiene los clientes y los voy mostrando por consola quienes pertenecen a la sucursal
+                for (let i :number = 0; i < this.listaClientes.length; i++){    
+                    if (this.sucursales[this.posicionArreglo].getNombre() === this.listaClientes[i].getSucursal()){
+                        console.log("Nombre: " + this.listaClientes[i].getNombre());
+                        console.log("Telefono: " + this.listaClientes[i].getTelefono());
+                        console.log("ID: " + this.listaClientes[i].getId());
+                        this.listaClientes[i].getVip();
+                        console.log("Cantidad de mascotas: " + this.listaClientes[i].cantidadMascotas())
+                        console.log("Mascotas: ");
+                        //Llamo al metodo mostrarMascotas de la clase Cliente para mostrar las mascotas que estan a cargo del cliente
+                        this.listaClientes[i].mostrarMascotas();
+                        console.log("");
+                    };
+                };
+            };
         };
     }
 
@@ -63,6 +111,7 @@ export default class Veterinaria {
             console.log("Nombre: " + this.listaClientes[i].getNombre());
             console.log("Telefono: " + this.listaClientes[i].getTelefono());
             console.log("ID: " + this.listaClientes[i].getId());
+            console.log("Sucursal principal: " + this.listaClientes[i].getSucursal());
             this.listaClientes[i].getVip();
             console.log("Cantidad de mascotas: " + this.listaClientes[i].cantidadMascotas())
             console.log("Mascotas: ");
@@ -86,17 +135,17 @@ export default class Veterinaria {
 
     //Este metodo muestra toda la información que hay en la red de veterinarias
     public mostrarRed() :void {
-        console.log("-------------------------------------");
+        separador();
         console.log("SUCURSALES");
-        console.log("-------------------------------------");
+        separador();
         this.mostrarSucursales();
-        console.log("-------------------------------------");
+        separador();
         console.log("PROVEEDORES");
-        console.log("-------------------------------------");
+        separador();
         this.mostrarProveedores();
-        console.log("-------------------------------------");
+        separador();
         console.log("CLIENTES");
-        console.log("-------------------------------------");
+        separador();
         this.mostrarClientes();
     }
 
@@ -186,6 +235,8 @@ export default class Veterinaria {
         console.log("");
         //Pido el nombre de la mascota
         let eleccionNombre: string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
+        //Convierto el texto ingresado
+        eleccionNombre = primeraLetraMayuscula(eleccionNombre);
         //Reviso en el arreglo de pacientes para ver si hay coincidencia
         for (let i: number = 0; i < this.listaPacientes.length; i++) {
             //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para localizar la mascota
@@ -214,11 +265,11 @@ export default class Veterinaria {
         };
     }
 
-
-
     //Metodo para modificar clientes
     public modificarCliente (idOriginal) {
         let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre del cliente: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let telefono :number = Number(ReadlineSync.question("Ingrese el nuevo numero de telefono: "));
         let id :string = idOriginal;
         let clienteModificado : Cliente = new Cliente(nombre, telefono, id);
@@ -226,14 +277,105 @@ export default class Veterinaria {
         return clienteModificado;
     }
 
+    //Metodo para modificar la sucursal principal
+    public modificarSucursalPrincipal() :void{
+        console.log("");
+        //Pido el ID de lo que se quiera modificar
+        let idCliente: string = ReadlineSync.question("Ingrese el ID del cliente a modificar: ");
+        //Declaro las dos variables que voy a utilizar para encontrar al cliente y registrar su visita
+        let coincidencia :number = 0;
+        let posicionArreglo :number = 0;
+        //Recorro el arreglo para buscar al cliente solicitado
+        for (let i :number = 0; i < this.listaClientes.length; i++){
+            //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para borrar el objeto
+            if (idCliente === this.listaClientes[i].getId()){
+                coincidencia = 1;
+                posicionArreglo = i;
+            };
+        };
+        //Si hay coincidencia
+        if (coincidencia === 1){
+            console.log("");
+            console.log("Sucursales activas")
+            separador();
+            //Recorro el arreglo que contiene las sucursales y voy mostrando sus nombre por consola
+            for (let i :number = 0; i < this.sucursales.length; i++){
+                console.log("- " + this.sucursales[i].getNombre());
+            };
+            separador();
+            //Pido el nombre de la nueva sucursal principal y la valido con el siguiente metodo
+            this.validarNuevaSucursalPrincipal();
+            //Reemplazo la sucursal anterior por la nueva
+            this.listaClientes[posicionArreglo].sucursalPrincipal(this.sucursales[this.posicionArreglo].getNombre());
+            console.log("");
+            console.log("La sucursal principal se ha modificado exitosamente");
+        //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
+        } else if (this.intentos < 2){
+            console.log("");
+            console.log("No se encuentra en la base de datos, restan " + (2 - this.intentos) + " intentos.");
+            //Se van sumando los intentos
+            this.intentos++;
+            //Se vuelve a llamar al metodo registrarVisita para realizar otro intento
+            this.modificarSucursalPrincipal();
+        //Si se superan los 3 intentos
+        } else {
+            //Se reinicia el contador de intentos y se vuelve al menu
+            this.intentos = 0;
+            console.log("");
+            console.log("Limite de intentos exedido");
+        };
+    }
+
+    //Metodo para validar el nombre de mascota ingresado
+    public validarNuevaSucursalPrincipal() :void{
+        let coincidencia :number = 0;
+        //Se reinicia el contador de intentos
+        this.posicionArreglo = 0;
+        console.log("");
+        //Pido el nombre de la nueva sucursal principal
+        let nuevaSucursal :string = ReadlineSync.question("Ingrese el nombre de la sucursal: ");
+        //Convierto el texto ingresado
+        nuevaSucursal = primeraLetraMayuscula(nuevaSucursal);
+        //Reviso en el arreglo de pacientes para ver si hay coincidencia
+        for (let i: number = 0; i < this.sucursales.length; i++) {
+            //Si hay coincidencia asigno a las variables "coincidencia" y "posicionArreglo" los valores necesarios para localizar la mascota
+            if (nuevaSucursal === this.sucursales[i].getNombre()) {
+                coincidencia = 1;
+                this.posicionArreglo = i;
+            };
+        //Si hay coincidencia
+        }if (coincidencia === 1) {
+            //Se reinicia el contador de intentos
+            this.intentos = 0;
+        //Si no hay coincidencia hay 3 intentos hasta que se ingrese un ID valido
+        } else if (this.intentos < 2){
+            //Se van sumando los intentos
+            this.intentos++;
+            console.log("");
+            console.log("No se encuentra dicha sucursal, restan " + (3 - this.intentos) + " intentos.");
+            //Se vuelve a llamar al metodo validaMascota para realizar otro intento
+            this.validarNuevaSucursalPrincipal();
+        //Si se superan los 3 intentos
+        } else if (this.intentos >= 2){
+            //Se reinicia el contador de intentos y se vuelve al menu
+            this.intentos = 0;
+            console.log("");
+            throw new ErrorId("El ID no se encuentra en la base de datos");
+        };
+    }
+
     //Metodo para modificar pacientes
     public modificarPaciente (idOriginal) {
         let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre de la mascota: ");
-        let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
-        if (especie !== "perro"){
-            if (especie !== "gato"){
-                if (especie !== "exotica"){
-                    especie = "exotica";
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
+        let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (Perro/Gato/Exotica):");
+        //Convierto el texto para validar la especie
+        especie = primeraLetraMayuscula(especie);
+        if (especie !== "Perro"){
+            if (especie !== "Gato"){
+                if (especie !== "Exotica"){
+                    especie = "Exotica";
                 };
             };
         };
@@ -246,6 +388,8 @@ export default class Veterinaria {
     //Metodo para proveedores 
     public modificarProveedor (idOriginal: string) {
         let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre del proveedor: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let telefono :number = Number(ReadlineSync.question("Ingrese el nuevo numero de telefono: "));
         let id :string = idOriginal;
         let proveedorModificado : Proveedor = new Proveedor(nombre, telefono, id);
@@ -256,7 +400,11 @@ export default class Veterinaria {
     //Metodo para modificar sucursales
     public modificarSucursal (idOriginal: string) {
         let nombre :string = ReadlineSync.question("Ingrese el nuevo nombre nombre de sucursal: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let direccion :string = ReadlineSync.question("Ingrese la nueva direccion: ");
+        //Convierto el texto ingresado
+        direccion = primeraLetraMayuscula(direccion);
         let id :string = idOriginal;
         let sucursalModificado : Sucursal = new Sucursal(nombre, direccion, id);
     
@@ -315,6 +463,14 @@ export default class Veterinaria {
         if (coincidencia === 1) {
             //Se reinicia el contador de intentos
             this.intentos = 0;
+            //Busco los clientes que tengan asignada dicha sucursal para eliminarla en cada uno
+            if (lista === sucursales) {
+                 for (let i: number = 0; i < this.listaClientes.length; i++) {
+                    if (this.sucursales[this.posicionArreglo].getNombre() === this.listaClientes[i].getSucursal()){
+                        this.listaClientes[i].sucursalPrincipal("Sin seleccionar");
+                    }
+                 };
+            };
             //Elimino la posición correspondiente del arreglo
             lista.splice(this.posicionArreglo, 1);
             console.log("");
@@ -359,7 +515,19 @@ export default class Veterinaria {
     //Metodo para agregar clientes
     public agregarCliente () :void {
         console.log("");
+        console.log("Sucursales activas")
+        separador();
+        //Recorro el arreglo que contiene las sucursales y voy mostrando sus nombre por consola
+        for (let i :number = 0; i < this.sucursales.length; i++){
+            console.log("- " + this.sucursales[i].getNombre());
+        };
+        separador();
+        let nombreSucursal :string = ReadlineSync.question("Ingrese el nombre de la sucursal: ");
+        //Convierto el texto ingresado
+        nombreSucursal = primeraLetraMayuscula(nombreSucursal);
         let nombre :string = ReadlineSync.question("Ingrese el nombre del cliente: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
         //Genero un ID unico para el cliente
         let id :string = this.generarId(this.listaClientes);
@@ -368,23 +536,29 @@ export default class Veterinaria {
         //Agrego un nuevo paciente por cada mascota que tenga el cliente
         for (let i :number = 0; i < mascotas; i++){
             let nombreMascota :string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
+            //Convierto el texto ingresado
+            nombreMascota = primeraLetraMayuscula(nombreMascota);
             //Pido la especie de la mascota
-            let especieMascota :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
+            let especieMascota :string = ReadlineSync.question("Ingrese la especie de la mascota (Perro/Gato/Exotica):");
+            //Convierto el texto para validar la especie
+            especieMascota = primeraLetraMayuscula(especieMascota);
             //Si no es perro o gato siempre va a aparecer como exotica
-            if (especieMascota != "perro"){
-                if (especieMascota !== "gato"){
-                    if (especieMascota !== "exotica"){
-                        especieMascota = "exotica";
+            if (especieMascota != "Perro"){
+                if (especieMascota !== "Gato"){
+                    if (especieMascota !== "Exotica"){
+                        especieMascota = "Exotica";
                     };
                 };
             };
             //Asigno el ID del cliente a la mascota
             let idMascota :string = id;
             let nuevoPaciente : Paciente = new Paciente(nombreMascota, especieMascota, idMascota);
-    
+
             this.listaPacientes.push(nuevoPaciente);
         }
         let nuevoCliente : Cliente = new Cliente(nombre, telefono, id);
+        //Asigno la sucursal al nuevo cliente
+        nuevoCliente.sucursalPrincipal(nombreSucursal);
         console.log("");
         //Despues de crear el cliente muestro su ID
         console.log("Su ID es: " + id);
@@ -396,13 +570,17 @@ export default class Veterinaria {
     public agregarPaciente () :void {
         console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre de la mascota: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         //Pido la especie de la mascota
         let especie :string = ReadlineSync.question("Ingrese la especie de la mascota (perro/gato/exotica):");
+        //Convierto el texto para validar la especie
+        especie = primeraLetraMayuscula(especie);
         //Si no es perro o gato siempre va a aparecer como exotica
-        if (especie !== "perro"){
-            if (especie !== "gato"){
-                if (especie !== "exotica"){
-                    especie = "exotica";
+        if (especie !== "Perro"){
+            if (especie !== "Gato"){
+                if (especie !== "Exotica"){
+                    especie = "Exotica";
                 };
             };
         };
@@ -429,7 +607,7 @@ export default class Veterinaria {
                 posicionArreglo = i;
             };
         };
-        
+        //Si hay coincidencia
         if (coincidencia === 1) {
             this.idPaciente = this.listaClientes[posicionArreglo].getId();
         } else if (this.intentos < 2){
@@ -450,10 +628,36 @@ export default class Veterinaria {
         return this.idPaciente;
     }
 
+    //Metodo para consultar si la mascota esta asociada a un cliente nuevo o a uno ya registrado
+    public consultaDeCliente() :void {
+        let opcion :number = 0;
+        console.log("¿El nuevo paciente corresponde a un nuevo cliente o a uno ya registrado?")
+        separador();
+        console.log("1 - Nuevo cliente")
+        console.log("2 - Cliente ya registrado")
+        separador();
+        opcion = (ReadlineSync.questionInt("Ingrese opcion: "));
+        switch (opcion){
+            case 1:
+                this.agregarCliente();
+            break;
+            case 2:
+                this.agregarPaciente();
+            break;
+            default:
+                console.log("Opción inválida");
+                console.log("");
+                this.consultaDeCliente();
+            break;
+        };
+    }
+
     //Metodo para agregar proveedores
     public agregarProveedor () :void {
         console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre del proveedor: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let telefono :number = Number(ReadlineSync.question("Ingrese el numero de telefono: "));
         //Genero un ID unico para el proveedor
         let id :string = this.generarId(this.listaProveedores);
@@ -468,7 +672,11 @@ export default class Veterinaria {
     public agregarSucursal () :void {
         console.log("");
         let nombre :string = ReadlineSync.question("Ingrese el nombre de sucursal: ");
+        //Convierto el texto ingresado
+        nombre = primeraLetraMayuscula(nombre);
         let direccion :string = ReadlineSync.question("Ingrese direccion: ");
+        //Convierto el texto ingresado
+        direccion = primeraLetraMayuscula(direccion);
         //Genero un ID unico para la sucursal
         let id :string = this.generarId(this.sucursales);
         let nuevoSucursal: Sucursal = new Sucursal(nombre, direccion, id);
